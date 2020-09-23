@@ -17,10 +17,10 @@ If you would like code in a specific language/library let us know so we can prio
 
 
 ## Useful links
-Homepage: https://bitpost.co
-Documentation/tutorials: https://docs.bitpost.co
-API reference: https://apidocs.bitpost.co
-New features/issues/suggestions: https://feedback.bitpost.co
+- Homepage: https://bitpost.co
+- Documentation/tutorials: https://docs.bitpost.co
+- API reference: https://apidocs.bitpost.co
+- New features/issues/suggestions: https://feedback.bitpost.co
 
 ## Contact
 If you have any issue/suggestion/feature-request/question you can open an issue here or post it our [feedback forum](https://feedback.bitpost.co). Alternatively, get in touch via support@bitpost.co or @bitpostAPI on twitter/telegram.
