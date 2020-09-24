@@ -3,3 +3,4 @@ bitcoinlib >= 0.4.16
 python_bitcoinlib >= 0.11.0
 numpy >= 1.15.4
 requests >= 2.24.0
+bitpost >= 1.0.1

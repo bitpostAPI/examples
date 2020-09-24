@@ -1,10 +1,12 @@
 import bit
 from bit.transaction import select_coins
 
-from bitcoin.signmessage import SignMessage, BitcoinMessage  # https://github.com/petertodd/python-bitcoinlib
+# https://github.com/petertodd/python-bitcoinlib
+from bitcoin.signmessage import SignMessage, BitcoinMessage
 from bitcoin.wallet import CBitcoinSecret
 from bitcoin.core import x
-from bit_library.bitpost_interface_for_bit import BipostInterfaceForBit
+
+from bitpost.interface_for_bit import BitpostInterfaceForBit
 
 import numpy as np
 from binascii import hexlify
@@ -34,7 +36,7 @@ def retrieve_wallettoken(bit_key):
 
     message = "bitpost" + str(round(time.time() / 1000))  # we add a timestamp to make the proof valid for only ~ 1h
     sig = SignMessage(bitcoinlib_key, BitcoinMessage(message))
-    return BipostInterfaceForBit.get_wallettoken(pub_key_hex, sig)
+    return BitpostInterfaceForBit.get_wallettoken(pub_key_hex, sig)
 
 
 key = bit.Key.from_bytes(private_key_bytes)
@@ -43,7 +45,7 @@ wallettoken = retrieve_wallettoken(key)
 if wallettoken is None:
     wallettoken = generate_wallettoken(key.public_key)
 
-bitpost_interface = BipostInterfaceForBit(wallettoken=wallettoken, pubkey_hex=key.pub_to_hex())
+bitpost_interface = BitpostInterfaceForBit(wallettoken=wallettoken, pubkey_hex=key.pub_to_hex())
 
 
 def get_max_feerate(max_dollar_fee):

@@ -1,5 +1,5 @@
 import numpy as np
-from bit_library.bitpost_interface_for_bit import BipostInterfaceForBit
+from bitpost.interface import BitpostInterface
 import bit.transaction
 import bit.constants
 
@@ -36,6 +36,6 @@ for feerate in feerates:
     raw_signed_txs.append(tx)
 
 
-bitpost_interface = BipostInterfaceForBit()
+bitpost_interface = BitpostInterface()
 request = bitpost_interface.create_bitpost_request(raw_signed_txs, confirmation_target_hours*60, delay=0)
 request.send_request()
