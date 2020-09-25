@@ -1,4 +1,5 @@
 import numpy as np
+import datetime as dt
 from bitpost.interface import BitpostInterface
 import bit.transaction
 import bit.constants
@@ -7,7 +8,7 @@ import bit.constants
 destination_address = '1BitcoinEaterAddressDontSendf59kuE'
 sats_to_send = 566
 maximum_dollar_fee = 5
-confirmation_target_hours = 1.5
+confirmation_target_seconds = round(dt.datetime.now().timestamp()) + 60 * 60  # eg. in one hour
 private_key_bytes = b'REPLACE_WITH_YOUR_RANDOM_STRING'
 ################
 
@@ -37,5 +38,5 @@ for feerate in feerates:
 
 
 bitpost_interface = BitpostInterface()
-request = bitpost_interface.create_bitpost_request(raw_signed_txs, confirmation_target_hours*60, delay=0)
+request = bitpost_interface.create_bitpost_request(raw_signed_txs, confirmation_target_seconds, delay=0)
 request.send_request()

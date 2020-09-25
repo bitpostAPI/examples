@@ -20,7 +20,7 @@ import time
 destination_address = '1BitcoinEaterAddressDontSendf59kuE'
 sats_to_send = 566
 maximum_dollar_fee = 5
-confirmation_target_hours = 0.75
+confirmation_target_seconds = round(time.time()) + 60 * 60  # eg. in one hour
 private_key_bytes = b'REPLACE_WITH_YOUR_RANDOM_STRING'
 ##########################
 
@@ -98,5 +98,5 @@ for pre_selection in rbf_selected:
         tx = key.create_transaction([(destination_address, sats_to_send, 'satoshi')], feerates[i], combine=True, unspents=coin_selection, replace_by_fee=True)
         raw_signed_txs.append(tx)
 
-request = bitpost_interface.create_bitpost_request(raw_signed_txs, confirmation_target_hours*60, delay=0)
+request = bitpost_interface.create_bitpost_request(raw_signed_txs, confirmation_target_seconds, delay=0)
 request.send_request()
