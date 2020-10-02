@@ -47,15 +47,10 @@ if wallettoken is None:
 
 bitpost_interface = BitpostInterfaceForBit(wallettoken=wallettoken, pubkey_hex=key.pub_to_hex())
 
-
-def get_max_feerate(max_dollar_fee):
-    MAX_FEE_IN_SATS = bit.network.currency_to_satoshi(max_dollar_fee, 'usd') # don't pay more than $5
-    HEURISTIC_TX_SIZE = 10 + 34*2 + 90 # 2 outputs and one P2SH-P2WKH input
-    USER_MAX_FEERATE = MAX_FEE_IN_SATS/HEURISTIC_TX_SIZE
-    return round(min(USER_MAX_FEERATE, max(20, bit.network.get_fee(fast=True) * 3))) # sat/B
-
-
-MAX_FEERATE = get_max_feerate(maximum_dollar_fee)
+MAX_FEE_IN_SATS = bit.network.currency_to_satoshi(maximum_dollar_fee, 'usd')
+HEURISTIC_TX_SIZE = 10 + 34*2 + 90 # 2 outputs and one P2SH-P2WKH input
+USER_MAX_FEERATE = MAX_FEE_IN_SATS/HEURISTIC_TX_SIZE
+feerates = BitpostInterfaceForBit.get_feerates(USER_MAX_FEERATE, size=50, target=confirmation_target_seconds)
 
 unspents = key.get_unspents()
 used_utxos = bitpost_interface.get_utxos_used_by_bitpost()
@@ -76,20 +71,17 @@ def rbf_coin_select(utxos_answer, required_change, few_broadcasts=100, max_group
     return [[]], 0
 
 
-sats_required_from_rbf = sats_to_send - stripped_balance + MAX_FEERATE + 566
+sats_required_from_rbf = sats_to_send - stripped_balance + max(feerates) + 566
 all_rbf_change = bitpost_interface.get_change_utxos_from_bitpost()
 rbf_selected, min_rbf_sats = rbf_coin_select(all_rbf_change, sats_required_from_rbf)
 
 selected_unspents = []
-if not min_rbf_sats > sats_to_send + MAX_FEERATE + 566 and stripped_balance > 0:
-    selected_unspents = select_coins(sats_to_send - min_rbf_sats, MAX_FEERATE, [34], min_change=566, unspents=unspents)
+if not min_rbf_sats > sats_to_send + max(feerates) + 566 and stripped_balance > 0:
+    selected_unspents = select_coins(sats_to_send - min_rbf_sats, max(feerates), [34], min_change=566, unspents=unspents)
     selected_unspents = selected_unspents[0]
 elif min_rbf_sats < sats_required_from_rbf:
     print("Not enough balance. Fund wallet: address=" + key.segwit_address)
     exit(0)
-
-DEFAULT_NUMBER_TXS = 50 # create 50 transactions with different fees
-feerates = [int(feerate) for feerate in np.arange(1, MAX_FEERATE, step=max(1, (MAX_FEERATE - 1) / DEFAULT_NUMBER_TXS))] # in sat/B
 
 raw_signed_txs = []
 for pre_selection in rbf_selected:

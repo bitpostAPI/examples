@@ -1,15 +1,16 @@
 import numpy as np
 import datetime as dt
 from bitpost.interface import BitpostInterface
+from bitpost.interface_for_bit import BitpostInterfaceForBit
 import bit.transaction
 import bit.constants
 
 # REPLACE WITH YOUR VALUES
 destination_address = '1BitcoinEaterAddressDontSendf59kuE'
 sats_to_send = 566
-maximum_dollar_fee = 5
+maximum_dollar_fee = 5 # don't pay more than $5
 confirmation_target_seconds = round(dt.datetime.now().timestamp()) + 60 * 60  # eg. in one hour
-private_key_bytes = b'REPLACE_WITH_YOUR_RANDOM_STRING'
+private_key_bytes = b'fenistil-fiskars-wd-lenovo'
 ################
 
 key = bit.Key.from_bytes(private_key_bytes)
@@ -19,17 +20,15 @@ if float(key.get_balance(currency='satoshi')) < 1000:
     exit(1)
 
 # This is a very SUB-OPTIMAL approach just for demo purposes only, you should use the exact transaction size
-MAX_FEE_IN_SATS = bit.network.currency_to_satoshi(maximum_dollar_fee, 'usd') # don't pay more than $5
+MAX_FEE_IN_SATS = bit.network.currency_to_satoshi(maximum_dollar_fee, 'usd')
 HEURISTIC_TX_SIZE = 10 + 34*2 + 90 # 2 outputs and one P2SH-P2WKH input
 USER_MAX_FEERATE = MAX_FEE_IN_SATS/HEURISTIC_TX_SIZE
-MAX_FEERATE = int(min(USER_MAX_FEERATE, max(20, bit.network.get_fee(fast=True) * 3))) # sat/B
 
-DEFAULT_NUMBER_TXS = 50 # create 50 transactions with different fees
-feerates = [int(feerate) for feerate in np.arange(1, MAX_FEERATE, step=max(1, (MAX_FEERATE - 1) / DEFAULT_NUMBER_TXS))] # in sat/B
+feerates = BitpostInterfaceForBit.get_feerates(USER_MAX_FEERATE, size=50, target=confirmation_target_seconds)
 
 # select inputs
 unspents = key.get_unspents()
-selected_unspents, _ = bit.transaction.select_coins(sats_to_send, MAX_FEERATE, [36], min_change=566, unspents=unspents)
+selected_unspents, _ = bit.transaction.select_coins(sats_to_send, max(feerates), [36], min_change=566, unspents=unspents)
 
 raw_signed_txs = []
 for feerate in feerates:
