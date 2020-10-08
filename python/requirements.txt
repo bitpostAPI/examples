@@ -1,5 +1,5 @@
-bit >= 0.6.3
+bit >= 0.7.2
 bitcoinlib >= 0.4.16
 python_bitcoinlib >= 0.11.0
 numpy >= 1.15.4
-bitpost >= 1.0.4
+bitpost >= 1.1.2

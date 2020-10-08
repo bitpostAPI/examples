@@ -1,18 +1,17 @@
 import datetime as dt
-from bitpost.interface import BitpostInterface
 from bitpost.interface_for_bit import BitpostInterfaceForBit
 import bit.transaction
 import bit.constants
 
 # REPLACE WITH YOUR VALUES
-destination_address = '1BitcoinEaterAddressDontSendf59kuE'
+destination_address = 'mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt'
 sats_to_send = 566
-maximum_dollar_fee = 5 # don't pay more than $5
+maximum_dollar_fee = 1 # don't pay more than $1
 confirmation_target_seconds = round(dt.datetime.now().timestamp()) + 60 * 60  # eg. in one hour
 private_key_bytes = b'REPLACE_WITH_YOUR_RANDOM_STRING'
 ################
 
-key = bit.Key.from_bytes(private_key_bytes)
+key = bit.PrivateKeyTestnet.from_bytes(private_key_bytes)
 
 if float(key.get_balance(currency='satoshi')) < 1000:
     print('Fund your wallet first. address=' + key.segwit_address)
@@ -23,7 +22,7 @@ MAX_FEE_IN_SATS = bit.network.currency_to_satoshi(maximum_dollar_fee, 'usd')
 HEURISTIC_TX_SIZE = 10 + 34*2 + 90 # 2 outputs and one P2SH-P2WKH input
 USER_MAX_FEERATE = MAX_FEE_IN_SATS/HEURISTIC_TX_SIZE
 
-bitpost_interface = BitpostInterfaceForBit()
+bitpost_interface = BitpostInterfaceForBit(testnet=True)
 feerates = bitpost_interface.get_feerates(USER_MAX_FEERATE, size=50, target=confirmation_target_seconds)
 
 # select inputs

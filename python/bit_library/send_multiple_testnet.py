@@ -16,13 +16,13 @@ import time
 # but is able to spend from pending RBF change that might be replaced.
 
 # REPLACE WITH YOUR VALUES
-destination_address = '1BitcoinEaterAddressDontSendf59kuE'
+destination_address = 'mkHS9ne12qx9pS9VojpwU5xtRd4T7X7ZUt'
 sats_to_send = 566
-maximum_dollar_fee = 5
+maximum_dollar_fee = 1
 confirmation_target_seconds = round(time.time()) + 60 * 60  # eg. in one hour
 private_key_bytes = b'REPLACE_WITH_YOUR_RANDOM_STRING'
 ##########################
-bitpost_interface = BitpostInterfaceForBit()
+bitpost_interface = BitpostInterfaceForBit(testnet=True)
 
 
 def generate_wallettoken(master_pubkey):
@@ -39,7 +39,7 @@ def retrieve_wallettoken(bit_key):
     return bitpost_interface.get_wallettoken(pub_key_hex, sig)
 
 
-key = bit.Key.from_bytes(private_key_bytes)
+key = bit.PrivateKeyTestnet.from_bytes(private_key_bytes)
 
 wallettoken = retrieve_wallettoken(key)
 if wallettoken is None:
