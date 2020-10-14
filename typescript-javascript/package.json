@@ -1,0 +1,19 @@
+{
+  "name": "bitpost-bitcoinjs",
+  "version": "1.0.0",
+  "description": "Sample bitpost API integration with bitcoinJS",
+  "dependencies": {
+    "@types/node": "^14.11.8",
+    "bip32": "^2.0.5",
+    "bip39": "^3.0.2",
+    "bitcoinjs-lib": "^5.1.10",
+    "coinselect": "^3.1.12",
+    "bitpost": "^1.0.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pedro FR",
+  "license": "MIT"
+}
