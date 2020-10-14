@@ -10,7 +10,7 @@ With bitpost API you can get the transaction fee of your bitcoin on-chain transa
 | LIbrary    		| Basic integration 	| Intermediate 	| 
 |-----------------------|-----------------------|--------------	|
 | python/bit 		|          ✅         	|      ✅     	| 
-| javascript/bitcoinJS  |          💭        	|              	|
+| javascript/bitcoinJS  |          ✅        	|              	|
 | java/bitcoinJ		|          💭         	|              	|
 
 If you would like code in a specific language/library let us know so we can prioritize it!
