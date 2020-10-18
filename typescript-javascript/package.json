@@ -4,7 +4,6 @@
   "description": "Sample bitpost API integration with bitcoinJS",
   "dependencies": {
     "@types/node": "^14.11.8",
-    "bip32": "^2.0.5",
     "bip39": "^3.0.2",
     "bitcoinjs-lib": "^5.1.10",
     "coinselect": "^3.1.12",

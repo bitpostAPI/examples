@@ -3,3 +3,6 @@ notebook.py
 node_modules
 *.map
 package-lock.json
+*.iml
+target
+notebook*

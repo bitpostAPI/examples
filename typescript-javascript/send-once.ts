@@ -6,7 +6,7 @@ const request = require("sync-request");
 import {BitpostInterfaceForBitcoinJS, BitpostRequest} from "bitpost"
 
 // input ---------------------------------------------
-let maxDollarFee: number = 3
+const maxDollarFee: number = 3
 const destinationAddress: string = '1BitcoinEaterAddressDontSendf59kuE';
 const satsToSend: number = 566;
 const confirmation_target_seconds = Math.round(Date.now()/1000) + 60 * 60  // eg. in one hour
@@ -116,6 +116,7 @@ for(const feerate of feerates){
   let final_tx = make_transaction(inputs, outputs, feerate, txSize);
   rawTxs.push(final_tx.extractTransaction().toHex())
 }
+
 
 const delay = 0
 let bitpostRequest: BitpostRequest = bitpostInterface.createBitpostRequest(
